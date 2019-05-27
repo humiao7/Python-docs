@@ -280,6 +280,157 @@ print('你总共猜了%d次' % counter)
 ```
 上面代码中的 **break**关键字来提前终止循环，需要注意的是break只能终止它所在的那个循环，此外还有另一个关键字是 **continue**，它可以用来放弃本次循环后续的代码直接让循环进入下一轮。
 
+## Python函数和模块的使用
+
+函数是组织好的，可重复使用的，用来实现单一，或相关联功能的代码段。
+
+函数能提高应用的模块性，和代码的重复利用率。Python提供了许多内建函数，比如print()。但你也可以自己创建函数，这被叫做用户自定义函数
+
+### 定义函数
+
+在Python中可以使用def关键字来定义函数，和变量一样每个函数也有一个响亮的名字，而且命名规则跟变量的命名规则是一致的。在函数名后面的圆括号中可以放置传递给函数的参数，这一点和数学上的函数非常相似，程序中函数的参数就相当于是数学上说的函数的自变量，而函数执行完成后我们可以通过return关键字来返回一个值，这相当于数学上说的函数的因变量
+
+#### 函数的参数
+
+Python中的函数与其他语言中的函数还是有很多不太相同的地方，其中一个显著的区别就是Python对函数参数的处理。在Python中，函数的参数可以有默认值，也支持使用可变参数，所以Python并不需要像其他语言一样支持函数的重载，因为我们在定义一个函数的时候可以让它有多种不同的使用方式，例如：
+
+```Python
+import random
+
+def roll_dice(n=2):
+     """
+    摇色子
+    
+    :param n: 色子的个数
+    :return: n颗色子点数之和
+    """
+    
+    total = 0
+    for _ in range(n):
+        total += random.randint(1, 6)
+    return total
+ 
+
+def add(a=0, b=0, c=0):
+    """
+    a+b+c
+    """
+    
+    return a + b + c
+```
+
+```Python
+# 如果没有指定参数那么使用默认值摇两颗色子
+print(roll_dice())
+# 摇三颗色子
+print(roll_dice(3))
+print(add())  # 0
+print(add(1)) # 1
+print(add(1, 2)) # 3
+print(add(1, 2, 3)) # 6
+# 传递参数时可以不按照设定的顺序进行传递
+print(add(c=50, a=100, b=200))  # 350
+```
+
+**不定长参数**
+
+在具体业务场景中，有时需要一个函数能处理比当初声明时更多的参数。这些参数叫做不定长参数，定长参数不同，不定长参数声明时不会命名。基本语法如下：
+
+```Python
+# 在参数名前面的*表示args是一个不定长参数
+# 加了星号 * 的参数会以元组(tuple)的形式导入，存放所有未命名的变量参数。
+# 如果在函数调用时没有指定参数，它就是一个空元组。我们也可以不向函数传递未命名的变量。
+def printAnything(str1,*args):
+    print(str1)
+    print(args)
+    return
+    
+printAnything('helloworld')  # helloworld
+printAnything('helloworld',1,2,3,4,5) # helloworld (1,2,3,4,5)
+printAnything('helloworld',1,2,3,4,5,helloworld) # helloworld (1,2,3,4,5,'helloworld')
+```
+
+### 模块管理
+
+python程序的运行是基于python解释器来进行的，如果你从 Python 解释器退出再进入，那么你定义的所有的方法和变量就都消失了。
+为此 Python 提供了一个办法，把这些定义存放在文件中，为一些脚本或者交互式的解释器实例使用，这个文件被称为模块。模块是一个包含所有你定义的函数和变量的文件，其后缀名是.py。模块可以被别的程序引入，以使用该模块中的函数等功能。
+
+**模块导入**
+
+```Python
+# 导入模块
+import support
+from modname import part1，part2...    # 从指定模块导入部分到当前命名空间
+from modname import *    # 把一个模块的所有内容全都导入到当前的命名空间
+```
+
+一个模块只会被导入一次，不管执行了多少次import，相应模块也只会导入一次，Python 的 from 语句让你从模块中导入一个指定的部分到当前命名空间中。
+
+**命名冲突**
+
+例如：从模块module1中导入foo()方法，从模块module2中导入foo()方法
+
+```Python
+from module1 import foo
+from module2 import foo
+
+foo() # 由于由于Python没有函数重载的概念，那么后面的定义会覆盖之前的定义，所以这里执行的实际是module1.foo();
+
+# 直接导入全部模块内容，根据模块选择执行内容
+import module1 
+import module2 
+
+module1.foo()
+module2.foo()
+
+# 利用as解决命名冲突
+import module1 as m1
+import module2 as m2
+
+m1.foo()
+m2.foo()
+```
+
+**值得注意的一点** : 如果我们导入的模块除了定义函数之外还中有可以执行代码，那么Python解释器在导入这个模块时就会执行这些代码，事实上我们可能并不希望如此，因此如果我们在模块中编写了执行代码，最好是将这些执行代码放入如下所示的条件中，这样的话除非直接运行该模块，if条件下的这些代码是不会执行的，因为只有直接执行的模块的名字才是“__main__”。
+
+module.py
+
+```Python
+def foo():
+    pass
+
+
+def bar():
+    pass
+
+
+# __name__是Python中一个隐含的变量它代表了模块的名字
+# 只有被Python解释器直接执行的模块的名字才是__main__
+if __name__ == '__main__':
+    print('call foo()')
+    foo()
+    print('call bar()')
+    bar()
+```
+
+test.py
+```Python
+import module
+
+# 导入module时 不会执行模块中if条件成立时的代码 因为模块的名字是module而不是__main__
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
