@@ -420,7 +420,71 @@ import module
 # 导入module时 不会执行模块中if条件成立时的代码 因为模块的名字是module而不是__main__
 ```
 
+## 字符串和常用数据结构
 
+**字符串操作**
+
+```Python
+str1 = 'hello,world!'
+# 通过len计算字符串的长度
+print(len(str1)) # 12
+# 将字符串首字母大写
+print(str1.capitalize()) # Hello,world!
+# 将字符串改写成大写
+print(str1.upper()) # HELLO,WORLD!
+# 从字符串中查找出子串的位置，字符串可视为字符数组，下标从0开始
+print(str1.find('or')) # 7
+print(str1.find('shit')) # -1
+# 找出子串的索引，与find类似但找不到子串时会引发异常
+print(str1.index('or')) # 7
+# print(str1.index('shit'))  # 查找不到子串，报错
+# 判断字符串是否以指定字符串开头
+print(str1.startswith('He')) # False
+print(str1.startswith('hel')) # True
+# 判断字符串是否以指定字符串结尾
+print(str1.endswith('!')) # True
+# 将字符串以指定宽度居中并在两端填充指定字符,如果指定宽度小于字符串len，默认返回字符串本身
+print(str1.center(50,'*')) # *******************hello,world!*******************
+# 将字符串以指定宽度靠右放置，左侧填充指定字符串
+print(str1.rjust(50,'*')) # **************************************hello,world!
+
+str2 = 'abc12345'
+# 从字符串中取出指定位置的字符
+print(str2[0]) # a
+# 字符串切片(从指定的开始索引到指定的结束索引，不包含结束索引)
+print(str2[2:5]) # c12
+print(str2[2:]) # c12345
+# str2[i:j:k]，从索引i开始，一直到j(不包含j)，步长为k，进行切片
+print(str2[2::2]) # c24
+print(str2[::2]) # ac24
+print(str2[::-1]) # 54321cba
+print(str2[1:7:2]) # b13
+print(str2[-3:-1]) # 34
+# 检查字符串是全否由数字构成
+print(str2.isdigit()) # False
+# 检查字符串是否全由字母构成
+print(str2.isalpha()) # False
+# 检查字符串是否由字母和数字构成
+print(str2.isalnum()) # True
+print(str1.isalnum()) # False
+# 去除字符串两边的空格
+str3 = '  jackfrued@126.com '
+print(str3.strip()) # jackfrued@126.com
+```
+
+**列表操作**
+```Python
+list1=[1,3,5,7,100]
+list2=['hello']*5  # ['hello', 'hello', 'hello', 'hello', 'hello']
+
+# 计算列表长度
+print(len(list1)) # 5
+# 下标取值
+print(list1[0]) # 1
+print(list1[4]) # 100
+print(list1[-1]) # 取倒数第1个元素 100
+print(list1[-3]) # 5
+```
 
 
 
